@@ -1,0 +1,31 @@
+.main-bg-color{
+    background-color:#192026;
+}
+.input-bg-color{
+    background-color: #374151;
+}
+.text-color{
+    color: #868686;
+}
+.backdrop-h{
+    height: 400px;
+}
+.img-h{
+height: 350px;    
+}
+.imgCard-h{
+    height: 450px;
+}
+.left-25{
+    left: 50px;
+}
+.left-75{
+    left: 75px;
+}
+.no-scrollbar{
+    scrollbar-width: none;
+}
+
+.overlay:hover{
+    opacity: 0 !important
+}
