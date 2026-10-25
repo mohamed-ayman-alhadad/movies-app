@@ -1,19 +1,34 @@
-import "bootstrap/dist/css/bootstrap.min.css"
-import './App.css'
-import { NavLink } from "react-router-dom"
+import { useState } from "react";
+import { NavLink, useNavigate, useSearchParams } from "react-router-dom";
 
 const Nav = () => {
-    return (
-        <nav className="d-flex w-100 align-items-center mb-4 ">
-            <h1 className="ms-5 me-5 mt-4 text-white col-2">Anonime</h1>
-            <div className="d-flex col-6 ">
-                <p className="ms-5 mt-5 fs-4 text-color"><NavLink to="/" className="text-decoration-none text-color">Home</NavLink></p>
-                <p className="ms-5 mt-5 fs-4 text-color">List anime</p>
-            </div>
-            <input className="mt-4  p-2 ps-3 col-3 fs-5 border-0 rounded-pill input-bg-color text-color "
-                type="text"
-                placeholder="Search anime or movie" />
-        </nav>
-    )
-}
-export default Nav
+  const navigate = useNavigate();
+  const [params] = useSearchParams();
+  const [query, setQuery] = useState(params.get("q") ?? "");
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    const q = query.trim();
+    if (q) navigate(`/search?q=${encodeURIComponent(q)}`);
+  };
+
+  return (
+    <nav className="container d-flex flex-wrap align-items-center gap-4 py-4">
+      <h1 className="text-white m-0 me-auto">Anonime</h1>
+      <NavLink to="/" end className={({ isActive }) =>
+        `fs-4 text-decoration-none ${isActive ? "text-white" : "text-color"}`}>
+        Home
+      </NavLink>
+      <form onSubmit={onSubmit} className="flex-grow-1" style={{ maxWidth: 380 }}>
+        <input
+          className="form-control p-2 ps-3 border-0 rounded-pill input-bg-color text-color"
+          type="search"
+          placeholder="Search movies"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+        />
+      </form>
+    </nav>
+  );
+};
+export default Nav;

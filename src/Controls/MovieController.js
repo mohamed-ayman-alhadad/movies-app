@@ -1,17 +1,23 @@
+import api from "./api";
 import MovieModal from "../modals/MovieModal";
-import axios from "axios";
+
+const toModels = (results) => results.map((m) => new MovieModal(m));
 
 class MovieController {
+  static async getPopular(signal) {
+    const { data } = await api.get("/movie/popular", { signal });
+    return toModels(data.results);
+  }
 
-    static async getMovies() {
+  static async getNowPlaying(signal) {
+    const { data } = await api.get("/movie/now_playing", { signal });
+    return toModels(data.results);
+  }
 
-        try {
-            const res = await axios.get("https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=9813ce01a72ca1bd2ae25f091898b1c7")
-            return res.data.results.map(movie => new MovieModal(movie.id,movie.title, movie.overview, movie.poster_path, movie.backdrop_path))
-        } catch (error) {
-            console.log(error);
-        }
-
-    }
+  static async searchMovies(query, signal) {
+    if (!query.trim()) return [];
+    const { data } = await api.get("/search/movie", { params: { query }, signal });
+    return toModels(data.results);
+  }
 }
-export default MovieController
+export default MovieController;
